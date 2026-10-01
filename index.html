@@ -3,113 +3,1284 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#dc2626">
+
+  <meta name="theme-color" content="#b91c1c">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Bakso Kaka Eci">
+
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon.svg">
-  <link rel="stylesheet" href="styles.css">
+
   <title>Kasir Bakso Kaka Eci</title>
+
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+
+    :root{
+      --red:#dc2626;
+      --red-dark:#991b1b;
+      --red-deep:#450a0a;
+      --red-light:#fee2e2;
+      --white:#fff;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --border:#fecaca;
+      --shadow:0 15px 40px rgba(127,29,29,.18);
+    }
+
+    body{
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      min-height:100vh;
+      color:var(--text);
+
+      background:
+        radial-gradient(circle at 10% 0%,rgba(255,255,255,.16),transparent 28%),
+        radial-gradient(circle at 90% 10%,rgba(255,255,255,.10),transparent 25%),
+        linear-gradient(135deg,#7f1d1d 0%,#dc2626 42%,#991b1b 100%);
+
+      background-attachment:fixed;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.08;
+
+      background-image:
+        radial-gradient(#fff 1px,transparent 1px);
+
+      background-size:22px 22px;
+    }
+
+    button,
+    input{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+    }
+
+    /* =========================
+       TOPBAR
+    ========================= */
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:50;
+
+      min-height:86px;
+      padding:14px 24px;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+
+      background:rgba(127,29,29,.78);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+
+      border-bottom:1px solid rgba(255,255,255,.15);
+
+      box-shadow:0 10px 30px rgba(0,0,0,.15);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .logo{
+      width:58px;
+      height:58px;
+
+      display:grid;
+      place-items:center;
+
+      font-size:30px;
+
+      border-radius:18px;
+
+      background:
+        linear-gradient(145deg,#fff,#fee2e2);
+
+      box-shadow:
+        0 8px 20px rgba(0,0,0,.2),
+        inset 0 0 0 2px rgba(255,255,255,.6);
+    }
+
+    .brand h1{
+      color:white;
+      font-size:24px;
+      font-weight:850;
+      letter-spacing:-.5px;
+    }
+
+    .brand span{
+      display:block;
+      margin-top:2px;
+      color:#fecaca;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .date{
+      padding:10px 15px;
+      border-radius:14px;
+
+      color:white;
+      font-size:13px;
+      font-weight:700;
+
+      background:rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.16);
+    }
+
+    .btn{
+      border:0;
+      border-radius:13px;
+      padding:11px 16px;
+      font-weight:750;
+      transition:.2s ease;
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+    }
+
+    .btn.ghost{
+      width:46px;
+      height:46px;
+      padding:0;
+
+      color:white;
+      font-size:19px;
+
+      background:rgba(255,255,255,.13);
+      border:1px solid rgba(255,255,255,.2);
+    }
+
+    .btn.dark{
+      color:white;
+      background:#1f2937;
+      box-shadow:0 6px 15px rgba(0,0,0,.15);
+    }
+
+    .btn.red{
+      color:white;
+      background:linear-gradient(135deg,#ef4444,#b91c1c);
+    }
+
+    .btn.light{
+      background:#f3f4f6;
+      color:#374151;
+    }
+
+    .btn.danger{
+      color:white;
+      background:#b91c1c;
+    }
+
+    .btn.full{
+      width:100%;
+    }
+
+    /* =========================
+       SUCCESS
+    ========================= */
+
+    .success{
+      position:fixed;
+      top:100px;
+      left:50%;
+      z-index:100;
+
+      transform:translateX(-50%);
+
+      padding:13px 20px;
+
+      color:#166534;
+      background:#dcfce7;
+
+      border:1px solid #86efac;
+      border-radius:14px;
+
+      box-shadow:var(--shadow);
+
+      font-weight:750;
+    }
+
+    .hidden{
+      display:none!important;
+    }
+
+    /* =========================
+       MAIN
+    ========================= */
+
+    .layout{
+      position:relative;
+      z-index:1;
+
+      width:min(1500px,calc(100% - 32px));
+
+      margin:24px auto;
+
+      display:grid;
+      grid-template-columns:minmax(0,1.5fr) minmax(350px,.8fr);
+      gap:22px;
+    }
+
+    .panel{
+      border-radius:25px;
+
+      background:rgba(255,255,255,.96);
+
+      border:1px solid rgba(255,255,255,.5);
+
+      box-shadow:
+        0 20px 50px rgba(69,10,10,.25),
+        inset 0 1px 0 rgba(255,255,255,.8);
+
+      overflow:hidden;
+    }
+
+    /* =========================
+       MENU
+    ========================= */
+
+    .menu-panel{
+      padding:22px;
+    }
+
+    .section-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+
+      margin-bottom:18px;
+    }
+
+    .section-head span{
+      font-size:17px;
+      font-weight:900;
+      color:#7f1d1d;
+      letter-spacing:.4px;
+    }
+
+    .section-head small{
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .menu-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+      gap:15px;
+    }
+
+    .menu-item,
+    .menu-card{
+      position:relative;
+
+      min-height:145px;
+      padding:18px;
+
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+
+      border-radius:20px;
+
+      background:
+        linear-gradient(145deg,#fff,#fff5f5);
+
+      border:1px solid #fee2e2;
+
+      box-shadow:0 7px 20px rgba(127,29,29,.08);
+
+      transition:.25s ease;
+    }
+
+    .menu-item:hover,
+    .menu-card:hover{
+      transform:translateY(-5px);
+
+      border-color:#fca5a5;
+
+      box-shadow:
+        0 14px 30px rgba(127,29,29,.18);
+    }
+
+    .menu-item::before,
+    .menu-card::before{
+      content:"";
+
+      position:absolute;
+      left:0;
+      top:0;
+
+      width:5px;
+      height:100%;
+
+      border-radius:20px 0 0 20px;
+
+      background:linear-gradient(#ef4444,#991b1b);
+    }
+
+    .menu-item h3,
+    .menu-card h3{
+      font-size:16px;
+      font-weight:850;
+      color:#111827;
+    }
+
+    .menu-item .price,
+    .menu-card .price{
+      color:#dc2626;
+      font-size:18px;
+      font-weight:900;
+    }
+
+    .menu-item button,
+    .menu-card button{
+      align-self:flex-end;
+
+      width:38px;
+      height:38px;
+
+      border:0;
+      border-radius:50%;
+
+      color:white;
+      background:linear-gradient(135deg,#ef4444,#b91c1c);
+
+      font-size:22px;
+      font-weight:800;
+
+      box-shadow:0 7px 15px rgba(220,38,38,.28);
+
+      transition:.2s;
+    }
+
+    .menu-item button:hover,
+    .menu-card button:hover{
+      transform:scale(1.08);
+    }
+
+    /* =========================
+       SALES
+    ========================= */
+
+    .sales-summary{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+
+      margin-top:20px;
+    }
+
+    .sold,
+    .revenue{
+      padding:18px 20px;
+
+      border-radius:18px;
+
+      color:white;
+
+      background:
+        linear-gradient(135deg,#991b1b,#dc2626);
+
+      box-shadow:0 10px 25px rgba(127,29,29,.18);
+    }
+
+    .sold span,
+    .revenue span{
+      display:block;
+      opacity:.8;
+      font-size:12px;
+      margin-bottom:5px;
+    }
+
+    .sold strong,
+    .revenue strong{
+      font-size:20px;
+    }
+
+    /* =========================
+       ORDER
+    ========================= */
+
+    .order-panel{
+      display:flex;
+      flex-direction:column;
+      min-height:650px;
+    }
+
+    .order-tabs{
+      padding:14px;
+
+      display:flex;
+      align-items:center;
+      gap:8px;
+
+      background:#fff5f5;
+
+      border-bottom:1px solid #fee2e2;
+    }
+
+    .tabs{
+      flex:1;
+
+      display:flex;
+      gap:7px;
+
+      overflow-x:auto;
+    }
+
+    .tabs button,
+    .tab{
+      min-width:80px;
+
+      padding:10px 13px;
+
+      border:1px solid #fecaca;
+      border-radius:12px;
+
+      color:#7f1d1d;
+      background:white;
+
+      font-weight:750;
+      white-space:nowrap;
+    }
+
+    .tabs button.active,
+    .tab.active{
+      color:white;
+      background:linear-gradient(135deg,#ef4444,#b91c1c);
+      border-color:#dc2626;
+    }
+
+    .add-tab{
+      width:42px;
+      height:42px;
+      padding:0;
+
+      font-size:22px;
+    }
+
+    .link-danger{
+      color:#dc2626;
+      background:none;
+      border:0;
+      font-weight:800;
+    }
+
+    /* =========================
+       CART
+    ========================= */
+
+    .cart{
+      flex:1;
+      padding:18px;
+
+      overflow-y:auto;
+      min-height:280px;
+    }
+
+    .cart:empty::before{
+      content:"🛒\A Belum ada pesanan";
+      white-space:pre;
+
+      min-height:230px;
+
+      display:grid;
+      place-items:center;
+
+      text-align:center;
+
+      color:#9ca3af;
+      font-size:18px;
+      font-weight:750;
+    }
+
+    .cart-item{
+      position:relative;
+
+      padding:14px;
+      margin-bottom:10px;
+
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+
+      border-radius:16px;
+
+      background:#fff7f7;
+      border:1px solid #fee2e2;
+    }
+
+    .cart-item h4{
+      font-size:14px;
+      font-weight:850;
+    }
+
+    .cart-item small{
+      color:#9ca3af;
+    }
+
+    .cart-item .price{
+      color:#dc2626;
+      font-weight:900;
+      margin-top:5px;
+    }
+
+    /* =========================
+       PAYMENT
+    ========================= */
+
+    .payment{
+      padding:18px;
+
+      background:
+        linear-gradient(180deg,#fff,#fff5f5);
+
+      border-top:1px solid #fee2e2;
+    }
+
+    .total-row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+
+      margin-bottom:14px;
+    }
+
+    .total-row span{
+      font-weight:800;
+    }
+
+    .total-row strong{
+      color:#dc2626;
+      font-size:23px;
+      font-weight:950;
+    }
+
+    #moneyInput{
+      width:100%;
+
+      padding:15px;
+
+      border:2px solid #fecaca;
+      border-radius:14px;
+
+      outline:none;
+
+      font-size:17px;
+      font-weight:700;
+
+      background:white;
+
+      transition:.2s;
+    }
+
+    #moneyInput:focus{
+      border-color:#ef4444;
+
+      box-shadow:
+        0 0 0 4px rgba(239,68,68,.12);
+    }
+
+    .quick-money{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+
+      margin:10px 0;
+    }
+
+    .quick-money button{
+      padding:11px;
+
+      border:1px solid #fecaca;
+      border-radius:12px;
+
+      background:white;
+      color:#991b1b;
+
+      font-weight:800;
+
+      transition:.2s;
+    }
+
+    .quick-money button:hover{
+      color:white;
+      background:#dc2626;
+    }
+
+    .pay{
+      width:100%;
+
+      padding:16px;
+
+      border:0;
+      border-radius:15px;
+
+      color:white;
+
+      background:
+        linear-gradient(135deg,#ef4444,#991b1b);
+
+      font-size:16px;
+      font-weight:900;
+
+      box-shadow:
+        0 10px 25px rgba(220,38,38,.28);
+
+      transition:.2s;
+    }
+
+    .pay:hover{
+      transform:translateY(-2px);
+      box-shadow:0 15px 30px rgba(220,38,38,.35);
+    }
+
+    /* =========================
+       MODAL
+    ========================= */
+
+    .modal{
+      position:fixed;
+      inset:0;
+      z-index:200;
+
+      display:grid;
+      place-items:center;
+
+      padding:18px;
+
+      background:rgba(30,0,0,.62);
+
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+    }
+
+    .modal-card{
+      width:min(700px,100%);
+      max-height:90vh;
+
+      overflow-y:auto;
+
+      padding:22px;
+
+      border-radius:24px;
+
+      background:white;
+
+      box-shadow:
+        0 30px 80px rgba(0,0,0,.35);
+
+      animation:modalIn .2s ease;
+    }
+
+    .modal-card.small{
+      width:min(500px,100%);
+    }
+
+    @keyframes modalIn{
+      from{
+        opacity:0;
+        transform:translateY(15px) scale(.97);
+      }
+
+      to{
+        opacity:1;
+        transform:none;
+      }
+    }
+
+    .modal-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+
+      margin-bottom:20px;
+    }
+
+    .modal-head h2{
+      color:#7f1d1d;
+      font-size:20px;
+    }
+
+    .close{
+      width:38px;
+      height:38px;
+
+      border:0;
+      border-radius:50%;
+
+      color:#991b1b;
+      background:#fee2e2;
+
+      font-weight:900;
+    }
+
+    .modal-card label{
+      display:block;
+      margin-bottom:8px;
+
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .modal-card input{
+      width:100%;
+      padding:13px;
+
+      border:1px solid #fecaca;
+      border-radius:12px;
+
+      outline:none;
+    }
+
+    .modal-card input:focus{
+      border-color:#ef4444;
+    }
+
+    .modal-actions{
+      display:flex;
+      justify-content:flex-end;
+      gap:8px;
+
+      margin-top:15px;
+    }
+
+    .settings-section{
+      margin-bottom:18px;
+      padding:17px;
+
+      border-radius:17px;
+
+      background:#fff7f7;
+      border:1px solid #fee2e2;
+    }
+
+    .settings-section h3{
+      margin-bottom:10px;
+      color:#7f1d1d;
+      font-size:15px;
+    }
+
+    .settings-section p{
+      color:#6b7280;
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .form-row{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+
+      margin-bottom:9px;
+    }
+
+    .setting-line{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+    }
+
+    .danger-box{
+      background:#fff1f2;
+      border-color:#fecaca;
+    }
+
+    /* =========================
+       HISTORY
+    ========================= */
+
+    .history-list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .history-item{
+      padding:14px;
+
+      border-radius:15px;
+
+      background:#fff7f7;
+      border:1px solid #fee2e2;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media(max-width:900px){
+
+      .layout{
+        grid-template-columns:1fr;
+      }
+
+      .order-panel{
+        min-height:600px;
+      }
+    }
+
+    @media(max-width:600px){
+
+      .topbar{
+        padding:12px 14px;
+        min-height:72px;
+      }
+
+      .logo{
+        width:46px;
+        height:46px;
+        font-size:24px;
+        border-radius:14px;
+      }
+
+      .brand h1{
+        font-size:18px;
+      }
+
+      .brand span{
+        font-size:10px;
+      }
+
+      .date{
+        display:none;
+      }
+
+      .layout{
+        width:calc(100% - 18px);
+        margin:10px auto 20px;
+        gap:12px;
+      }
+
+      .menu-panel{
+        padding:14px;
+        border-radius:20px;
+      }
+
+      .section-head{
+        align-items:flex-start;
+        flex-direction:column;
+        gap:3px;
+      }
+
+      .menu-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:10px;
+      }
+
+      .menu-item,
+      .menu-card{
+        min-height:125px;
+        padding:14px;
+        border-radius:16px;
+      }
+
+      .menu-item h3,
+      .menu-card h3{
+        font-size:14px;
+      }
+
+      .menu-item .price,
+      .menu-card .price{
+        font-size:15px;
+      }
+
+      .sales-summary{
+        gap:8px;
+      }
+
+      .sold,
+      .revenue{
+        padding:13px;
+      }
+
+      .sold strong,
+      .revenue strong{
+        font-size:16px;
+      }
+
+      .order-panel{
+        border-radius:20px;
+      }
+
+      .payment{
+        padding:14px;
+      }
+
+      .total-row strong{
+        font-size:20px;
+      }
+
+      .form-row{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
+
 <header class="topbar">
+
   <div class="brand">
     <div class="logo">🍜</div>
-    <div><h1>Bakso Kaka Eci</h1><span>POS Kasir Offline</span></div>
+
+    <div>
+      <h1>Bakso Kaka Eci</h1>
+      <span>POS Kasir • Cepat • Modern</span>
+    </div>
   </div>
+
   <div class="top-actions">
+
     <span id="today" class="date"></span>
-    <button class="btn ghost" id="settingsBtn">⚙️</button>
+
+    <button
+      class="btn ghost"
+      id="settingsBtn"
+      title="Pengaturan">
+      ⚙️
+    </button>
+
   </div>
+
 </header>
 
 <div id="successBar" class="success hidden"></div>
 
 <main class="layout">
+
+  <!-- ================= MENU ================= -->
+
   <section class="panel menu-panel">
+
     <div class="section-head">
-      <span>PILIH MENU</span>
-      <small>Klik item untuk tambah catatan</small>
+      <span>🍜 PILIH MENU</span>
+      <small>Klik menu untuk menambahkan pesanan</small>
     </div>
+
     <div id="menuGrid" class="menu-grid"></div>
+
     <div class="sales-summary">
-      <div class="sold"><span>Terjual:</span> <strong id="soldText">0 porsi</strong></div>
-      <div class="revenue"><span>Omset:</span> <strong id="revenueText">Rp 0</strong></div>
+
+      <div class="sold">
+        <span>🔥 Terjual Hari Ini</span>
+        <strong id="soldText">0 porsi</strong>
+      </div>
+
+      <div class="revenue">
+        <span>💰 Omset Hari Ini</span>
+        <strong id="revenueText">Rp 0</strong>
+      </div>
+
     </div>
+
   </section>
+
+
+  <!-- ================= PESANAN ================= -->
 
   <section class="panel order-panel">
+
     <div class="order-tabs">
+
       <div id="tabs" class="tabs"></div>
-      <button class="btn dark add-tab" id="addTab">＋</button>
-      <button class="link-danger hidden" id="clearCart">Reset</button>
+
+      <button
+        class="btn dark add-tab"
+        id="addTab">
+        ＋
+      </button>
+
+      <button
+        class="link-danger hidden"
+        id="clearCart">
+        Reset
+      </button>
+
     </div>
+
+
     <div id="cart" class="cart"></div>
 
+
     <div class="payment">
-      <div class="total-row"><span>Total Pesanan <b id="activeLabel">1</b></span><strong id="totalText">Rp 0</strong></div>
-      <input id="moneyInput" type="number" inputmode="numeric" placeholder="Uang diterima (Rp)">
-      <div class="quick-money">
-        <button id="exactBtn">Uang Pas</button>
-        <button data-money="50000">50rb</button>
-        <button data-money="100000">100rb</button>
+
+      <div class="total-row">
+
+        <span>
+          Total Pesanan
+          <b id="activeLabel">1</b>
+        </span>
+
+        <strong id="totalText">
+          Rp 0
+        </strong>
+
       </div>
-      <button id="payBtn" class="pay">Bayar Sekarang</button>
+
+
+      <input
+        id="moneyInput"
+        type="number"
+        inputmode="numeric"
+        placeholder="💵 Uang diterima (Rp)"
+      >
+
+
+      <div class="quick-money">
+
+        <button id="exactBtn">
+          Uang Pas
+        </button>
+
+        <button data-money="50000">
+          50rb
+        </button>
+
+        <button data-money="100000">
+          100rb
+        </button>
+
+      </div>
+
+
+      <button id="payBtn" class="pay">
+        💳 &nbsp; Bayar Sekarang
+      </button>
+
     </div>
+
   </section>
+
 </main>
 
-<!-- Note modal -->
+
+<!-- ================= MODAL CATATAN ================= -->
+
 <div id="noteModal" class="modal hidden">
+
   <div class="modal-card small">
-    <div class="modal-head"><h2 id="noteTitle">Tambah Catatan</h2><button class="close" data-close="noteModal">✕</button></div>
-    <label>Catatan khusus (opsional)</label>
-    <input id="noteInput" type="text" placeholder="Contoh: Pedas, tanpa seledri...">
-    <div class="modal-actions"><button class="btn light" data-close="noteModal">Batal</button><button id="addToCart" class="btn red">＋ Tambah</button></div>
+
+    <div class="modal-head">
+
+      <h2 id="noteTitle">
+        📝 Tambah Catatan
+      </h2>
+
+      <button
+        class="close"
+        data-close="noteModal">
+        ✕
+      </button>
+
+    </div>
+
+
+    <label>
+      Catatan khusus
+    </label>
+
+    <input
+      id="noteInput"
+      type="text"
+      placeholder="Contoh: Pedas, tanpa seledri..."
+    >
+
+
+    <div class="modal-actions">
+
+      <button
+        class="btn light"
+        data-close="noteModal">
+        Batal
+      </button>
+
+      <button
+        id="addToCart"
+        class="btn red">
+        ＋ Tambah
+      </button>
+
+    </div>
+
   </div>
+
 </div>
 
-<!-- Settings modal -->
+
+<!-- ================= SETTINGS ================= -->
+
 <div id="settingsModal" class="modal hidden">
+
   <div class="modal-card">
-    <div class="modal-head"><h2>⚙️ Pengaturan</h2><button class="close" data-close="settingsModal">✕</button></div>
+
+    <div class="modal-head">
+
+      <h2>⚙️ Pengaturan</h2>
+
+      <button
+        class="close"
+        data-close="settingsModal">
+        ✕
+      </button>
+
+    </div>
+
 
     <div class="settings-section">
-      <h3>Tambah Menu Baru</h3>
+
+      <h3>➕ Tambah Menu Baru</h3>
+
       <div class="form-row">
-        <input id="newName" type="text" placeholder="Nama menu">
-        <input id="newPrice" type="number" inputmode="numeric" placeholder="Harga (Rp)">
+
+        <input
+          id="newName"
+          type="text"
+          placeholder="Nama menu"
+        >
+
+        <input
+          id="newPrice"
+          type="number"
+          inputmode="numeric"
+          placeholder="Harga (Rp)"
+        >
+
       </div>
-      <button id="saveMenu" class="btn dark full">Simpan Menu</button>
+
+      <button
+        id="saveMenu"
+        class="btn dark full">
+        Simpan Menu
+      </button>
+
     </div>
 
+
     <div class="settings-section">
-      <h3>Daftar Menu & Edit</h3>
+
+      <h3>🍜 Daftar Menu & Edit</h3>
+
       <div id="menuEditor"></div>
+
     </div>
 
+
     <div class="settings-section">
-      <div class="setting-line"><div><h3>Riwayat Transaksi</h3><p>Lihat semua transaksi yang tersimpan di HP.</p></div><button id="historyBtn" class="btn dark">Buka</button></div>
+
+      <div class="setting-line">
+
+        <div>
+
+          <h3>🧾 Riwayat Transaksi</h3>
+
+          <p>
+            Lihat semua transaksi yang tersimpan di perangkat.
+          </p>
+
+        </div>
+
+        <button
+          id="historyBtn"
+          class="btn dark">
+          Buka
+        </button>
+
+      </div>
+
     </div>
+
 
     <div class="settings-section danger-box">
-      <h3>Data</h3>
-      <p>Reset omset dan riwayat transaksi akan menghapus data penjualan yang tersimpan.</p>
-      <button id="resetData" class="btn danger full">Reset Omset & Riwayat</button>
+
+      <h3>⚠️ Data Penjualan</h3>
+
+      <p>
+        Reset omset dan riwayat transaksi akan menghapus
+        data penjualan yang tersimpan.
+      </p>
+
+      <br>
+
+      <button
+        id="resetData"
+        class="btn danger full">
+        Reset Omset & Riwayat
+      </button>
+
     </div>
+
   </div>
+
 </div>
 
-<!-- History modal -->
+
+<!-- ================= HISTORY ================= -->
+
 <div id="historyModal" class="modal hidden">
+
   <div class="modal-card">
-    <div class="modal-head"><h2>🧾 Riwayat Transaksi</h2><button class="close" data-close="historyModal">✕</button></div>
-    <div id="historyList" class="history-list"></div>
+
+    <div class="modal-head">
+
+      <h2>🧾 Riwayat Transaksi</h2>
+
+      <button
+        class="close"
+        data-close="historyModal">
+        ✕
+      </button>
+
+    </div>
+
+    <div
+      id="historyList"
+      class="history-list">
+    </div>
+
   </div>
+
 </div>
+
 
 <script src="app.js"></script>
+
 </body>
 </html>
