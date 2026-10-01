@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#dc2626">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Bakso Kaka Eci">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <title>Kasir Bakso Kaka Eci</title>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">🍜</div>
+    <div><h1>Bakso Kaka Eci</h1><span>POS Kasir Offline</span></div>
+  </div>
+  <div class="top-actions">
+    <span id="today" class="date"></span>
+    <button class="btn ghost" id="settingsBtn">⚙️</button>
+  </div>
+</header>
+
+<div id="successBar" class="success hidden"></div>
+
+<main class="layout">
+  <section class="panel menu-panel">
+    <div class="section-head">
+      <span>PILIH MENU</span>
+      <small>Klik item untuk tambah catatan</small>
+    </div>
+    <div id="menuGrid" class="menu-grid"></div>
+    <div class="sales-summary">
+      <div class="sold"><span>Terjual:</span> <strong id="soldText">0 porsi</strong></div>
+      <div class="revenue"><span>Omset:</span> <strong id="revenueText">Rp 0</strong></div>
+    </div>
+  </section>
+
+  <section class="panel order-panel">
+    <div class="order-tabs">
+      <div id="tabs" class="tabs"></div>
+      <button class="btn dark add-tab" id="addTab">＋</button>
+      <button class="link-danger hidden" id="clearCart">Reset</button>
+    </div>
+    <div id="cart" class="cart"></div>
+
+    <div class="payment">
+      <div class="total-row"><span>Total Pesanan <b id="activeLabel">1</b></span><strong id="totalText">Rp 0</strong></div>
+      <input id="moneyInput" type="number" inputmode="numeric" placeholder="Uang diterima (Rp)">
+      <div class="quick-money">
+        <button id="exactBtn">Uang Pas</button>
+        <button data-money="50000">50rb</button>
+        <button data-money="100000">100rb</button>
+      </div>
+      <button id="payBtn" class="pay">Bayar Sekarang</button>
+    </div>
+  </section>
+</main>
+
+<!-- Note modal -->
+<div id="noteModal" class="modal hidden">
+  <div class="modal-card small">
+    <div class="modal-head"><h2 id="noteTitle">Tambah Catatan</h2><button class="close" data-close="noteModal">✕</button></div>
+    <label>Catatan khusus (opsional)</label>
+    <input id="noteInput" type="text" placeholder="Contoh: Pedas, tanpa seledri...">
+    <div class="modal-actions"><button class="btn light" data-close="noteModal">Batal</button><button id="addToCart" class="btn red">＋ Tambah</button></div>
+  </div>
+</div>
+
+<!-- Settings modal -->
+<div id="settingsModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-head"><h2>⚙️ Pengaturan</h2><button class="close" data-close="settingsModal">✕</button></div>
+
+    <div class="settings-section">
+      <h3>Tambah Menu Baru</h3>
+      <div class="form-row">
+        <input id="newName" type="text" placeholder="Nama menu">
+        <input id="newPrice" type="number" inputmode="numeric" placeholder="Harga (Rp)">
+      </div>
+      <button id="saveMenu" class="btn dark full">Simpan Menu</button>
+    </div>
+
+    <div class="settings-section">
+      <h3>Daftar Menu & Edit</h3>
+      <div id="menuEditor"></div>
+    </div>
+
+    <div class="settings-section">
+      <div class="setting-line"><div><h3>Riwayat Transaksi</h3><p>Lihat semua transaksi yang tersimpan di HP.</p></div><button id="historyBtn" class="btn dark">Buka</button></div>
+    </div>
+
+    <div class="settings-section danger-box">
+      <h3>Data</h3>
+      <p>Reset omset dan riwayat transaksi akan menghapus data penjualan yang tersimpan.</p>
+      <button id="resetData" class="btn danger full">Reset Omset & Riwayat</button>
+    </div>
+  </div>
+</div>
+
+<!-- History modal -->
+<div id="historyModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-head"><h2>🧾 Riwayat Transaksi</h2><button class="close" data-close="historyModal">✕</button></div>
+    <div id="historyList" class="history-list"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

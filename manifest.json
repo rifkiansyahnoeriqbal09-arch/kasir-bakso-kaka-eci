@@ -1,0 +1,12 @@
+{
+  "name": "Kasir Bakso Kaka Eci",
+  "short_name": "Bakso Kaka Eci",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f1f5f9",
+  "theme_color": "#dc2626",
+  "description": "Aplikasi kasir offline Bakso Kaka Eci",
+  "icons": [
+    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
